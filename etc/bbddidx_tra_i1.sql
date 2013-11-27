@@ -1,0 +1,19 @@
+DROP INDEX ASP.TRA_I1;
+
+CREATE INDEX ASP.TRA_I1 ON ASP.TRACKING
+(ID_EMAIL)
+LOGGING
+TABLESPACE ASPIDX
+PCTFREE    10
+INITRANS   2
+MAXTRANS   255
+STORAGE    (
+            INITIAL          16M
+            MINEXTENTS       1
+            MAXEXTENTS       UNLIMITED
+            PCTINCREASE      0
+            FREELISTS        1
+            FREELIST GROUPS  1
+            BUFFER_POOL      DEFAULT
+           )
+NOPARALLEL;

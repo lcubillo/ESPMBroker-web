@@ -1,0 +1,23 @@
+
+src.home = ./src
+src.java = ${src.home}/java
+
+lib.home = ./lib
+
+etc.home = ./etc
+
+web.home = ./web
+web.lib = ${web.home}/WEB-INF/lib
+
+
+build.home = ./build
+build.monitor = ${build.home}/monitor
+build.web = ${build.home}/web
+build.metainf = ${build.web}/META-INF
+build.classes = ${build.web}/WEB-INF/classes
+
+driver=
+userdb=
+passdb=
+mailserver=
+url=

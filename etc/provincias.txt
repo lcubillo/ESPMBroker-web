@@ -1,0 +1,52 @@
+value="15" ==> A CORUÑA
+value="03" ==> ALACANT
+value="02" ==> ALBACETE
+value="04" ==> ALMERIA
+value="01" ==> ARABA
+value="33" ==> ASTURIES
+value="05" ==> AVILA
+value="06" ==> BADAJOZ
+value="08" ==> BARCELONA
+value="48" ==> BIZKAIA
+value="09" ==> BURGOS
+value="10" ==> CACERES
+value="11" ==> CADIZ
+value="39" ==> CANTABRIA
+value="12" ==> CASTELLO
+value="51" ==> CEUTA
+value="13" ==> CIUDAD REAL
+value="14" ==> CORDOBA
+value="16" ==> CUENCA
+value="20" ==> GIPUZKOA
+value="17" ==> GIRONA
+value="18" ==> GRANADA
+value="19" ==> GUADALAJARA
+value="21" ==> HUELVA
+value="22" ==> HUESCA
+value="07" ==> ILLES BALEARS
+value="23" ==> JAEN
+value="26" ==> LA RIOJA
+value="35" ==> LAS PALMAS
+value="24" ==> LEON
+value="25" ==> LLEIDA
+value="27" ==> LUGO
+value="28" ==> MADRID
+value="29" ==> MALAGA
+value="52" ==> MELILLA
+value="30" ==> MURCIA
+value="31" ==> NAVARRA
+value="32" ==> OURENSE
+value="34" ==> PALENCIA
+value="36" ==> PONTEVEDRA
+value="38" ==> S.C.TENERIFE
+value="37" ==> SALAMANCA
+value="40" ==> SEGOVIA
+value="41" ==> SEVILLA
+value="42" ==> SORIA
+value="43" ==> TARRAGONA
+value="44" ==> TERUEL
+value="45" ==> TOLEDO
+value="46" ==> VALENCIA
+value="47" ==> VALLADOLID
+value="49" ==> ZAMORA
+value="50" ==> ZARAGOZA

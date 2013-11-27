@@ -1,0 +1,37 @@
+<lanzador maxCampaigns="1">
+	<readers>
+		 <!-- <reader class="com.canalmail.reader.mail.CMNetReader"
+			translator="com.canalmail.util.CMNetTranslator" maxInstances="1">
+			<launcher_instances>20</launcher_instances>
+			<context className="com.canalmail.utils.AppContextoCMNet">
+				<datasoutce methodName="properties"></datasoutce>
+			</context>
+		</reader> -->
+		<reader class="com.canalmail.reader.mail.MailReader">
+			<launcher_instances>20</launcher_instances>
+			<control methodName="CONTROL">%@*@%}:-)%@*@%</control>
+            <control_cabeceras methodName="CONTROL_CABECERAS">%@*@%};</control_cabeceras>
+            <EOS methodName="END_OF_SECTION">EOS</EOS>
+            <EOF methodName="END_OF_FILE">EOF</EOF>
+            <dirbase methodName="DirectorioGeneracion">/u04/app</dirbase>
+            <max_threads methodName="Max_threads">20</max_threads>
+            <default-replyTo methodName="ReplyTo">suscriptores@canalmail.com</default-replyTo>
+         </reader>
+   </readers>
+   <launchers>
+     <!-- <launcher class="com.canalmail.launcher.mail.MailLauncher" methodName="setReader" reader="com.canalmail.reader.mail.CMNetReader">
+         <retardo methodName="Retardo">100</retardo>
+         <reintento methodName="Reintentos">20</reintento>
+         <mail_server methodName="MailSmtp">127.0.0.1</mail_server>
+         <mail_server methodName="MailSmtp">127.0.0.1</mail_server>
+         <headers name="" methodName="Header">pruebacabecera</headers>
+      </launcher> -->
+      <launcher class="com.canalmail.launcher.mail.MailLauncher" reader="com.canalmail.reader.mail.MailReader">
+         <retardo methodName="Retardo">100</retardo>
+         <reintento methodName="Reintentos">20</reintento>
+         <mail_server methodName="MailSmtp">127.0.0.1</mail_server>
+         <mail_server methodName="MailSmtp">127.0.0.1</mail_server>
+         <headers name="" methodName="Header">pruebacabecera</headers>         
+      </launcher>      
+   </launchers>
+</lanzador>

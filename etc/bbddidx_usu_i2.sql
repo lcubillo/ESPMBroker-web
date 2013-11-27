@@ -1,0 +1,19 @@
+DROP INDEX ASP.USU_I2;
+
+CREATE INDEX ASP.USU_I2 ON ASP.USUARIOS
+(EMAIL)
+LOGGING
+TABLESPACE ASPIDX
+PCTFREE    10
+INITRANS   2
+MAXTRANS   255
+STORAGE    (
+            INITIAL          512K
+            MINEXTENTS       1
+            MAXEXTENTS       UNLIMITED
+            PCTINCREASE      0
+            FREELISTS        1
+            FREELIST GROUPS  1
+            BUFFER_POOL      DEFAULT
+           )
+NOPARALLEL;

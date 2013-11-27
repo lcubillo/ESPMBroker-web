@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE form-validation PUBLIC "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.0//EN" "http://jakarta.apache.org/commons/dtds/validator_1_0.dtd">
+<form-validation>
+	<formset>
+		<form name="envios_datosForm">
+			<field property="etiqueta" depends="required">
+				<arg0 key="envios.datos.etiqueta" />
+			</field>
+			<field property="asunto" depends="required">
+				<arg0 key="envios.datos.asunto" />
+			</field>
+			<field property="remitente" depends="required">
+				<arg0 key="envios.datos.remitente" />
+			</field>
+			<field property="replyTo" depends="required,email">
+				<arg0 key="envios.datos.replyTo" />
+			</field>
+			<field property="descripcion">
+				<arg0 key="envios.datos.descripcion" />
+			</field>
+			<field property="html" depends="required,mask">
+				<arg0 key="envios.datos.html" />
+				<var>
+              		<var-name>mask</var-name>
+              		<var-value>&lt;[bB][oO][dD][yY][\x00-\xFF]*&lt;\/[bB][oO][dD][yY]&gt;</var-value>
+	            </var>
+			</field>
+			<field property="texto" depends="required">
+				<arg0 key="envios.datos.texto" />
+			</field>		
+		</form>
+		<form name="envios_testForm">
+			<field property="emails[0]" depends="email">
+				<arg0 key="envios.test.emails1" />
+			</field>
+			<field property="emails[1]" depends="email">
+				<arg0 key="envios.test.emails2" />
+			</field>
+			<field property="emails[2]" depends="email">
+				<arg0 key="envios.test.emails3" />
+			</field>
+			<field property="emails[3]" depends="email">
+				<arg0 key="envios.test.emails4" />
+			</field>
+			<field property="emails[4]" depends="email">
+				<arg0 key="envios.test.emails5" />
+			</field>
+		</form>
+		<form name="listas_datosForm">
+			<field property="nombreLista" depends="required">
+				<arg0 key="listas.datos.nombreLista" />
+			</field>
+			<field property="fichero" depends="required">
+				<arg0 key="listas.datos.fichero" />
+			</field>
+		</form>
+		<form name="busquedaEmailForm">
+			<field property="email" depends="required">
+				<arg0 key="listas.busqueda.email" />
+			</field>
+		</form>
+		<form name="cambioPasswordForm">
+			<field property="oldPassword" depends="required">
+				<arg0 key="personal.cambioPassword.oldPassword" />
+			</field>
+			<field property="newPassword1" depends="required">
+				<arg0 key="personal.cambioPassword.newPassword1" />
+			</field>			
+			<field property="newPassword2" depends="required">
+				<arg0 key="personal.cambioPassword.newPassword2" />
+			</field>						
+		</form>		
+	</formset>
+</form-validation>

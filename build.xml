@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="broker" default="all" basedir=".">
+    <description>Envío masivo de mails a listas de terceros.</description>
+
+    <target name="init">
+        <property file="./build.properties"/>
+        
+        <path id="compile.classpath">
+            <fileset dir="${lib.home}" includes="*.jar"/>
+            <fileset dir="${lib.home}" includes="*.zip"/>
+        	<fileset dir="${web.lib}" includes="*.jar"/>
+        </path>
+
+    </target>
+
+    <target name="clean" depends="init">
+        <delete dir="${build.home}"/>
+    </target>
+
+    <target name="copy" depends="init">
+        <mkdir dir="${build.home}" />
+        <mkdir dir="${build.web}" />
+        <copy todir="${build.web}">
+            <fileset dir="${web.home}"/>
+        </copy>
+        <mkdir dir="${build.classes}" />
+        <copy todir="${build.classes}">
+        	<fileset dir="${src.java}" includes="*.properties"/>
+        	<fileset dir="${src.java}" includes="**/*.properties"/>
+        	<fileset dir="${src.java}" includes="**/*.xml"/>
+        </copy>
+
+    </target>
+
+    <target name="compile" depends="copy">
+        <javac srcdir="${src.java}" destdir="${build.classes}"
+               classpathref="compile.classpath" debug="true" source="1.4"
+	           target="1.4"/>
+    </target>
+
+    <target name="all" depends="clean, compile,war"/>
+	
+    <target name="war" depends="compile">
+    	<mkdir dir="${build.metainf}" />
+    	<copy todir="${build.metainf}" file="${etc.home}/ROOT.xml"/>
+        <rename src="${build.metainf}/ROOT.xml" dest="${build.metainf}/context.xml" />
+        <replace file="${build.metainf}/context.xml" token="${url.token}" value="${url.value}" />
+        <replace file="${build.metainf}/context.xml" token="${driver.token}" value="${driver.value}" />
+        <replace file="${build.metainf}/context.xml" token="${mailserver.token}" value="${mailserver.value}" />
+        <replace file="${build.metainf}/context.xml" token="${userdb.token}" value="${userdb.value}" />
+        <replace file="${build.metainf}/context.xml" token="${passdb.token}" value="${passdb.value}" />
+    	<zip destfile="${build.home}/ROOT.war">
+    		<fileset dir="${build.web}"/>
+    	</zip>
+	</target>
+	
+	<target name="monitor" depends="compile">
+		<mkdir dir="${build.monitor}" />
+        <copy todir="${build.monitor}">
+        	<fileset dir="${lib.home}" includes="*.jar">
+        		<exclude name="jsp-api.jar"/>
+        		<exclude name="servlet-api.jar"/>
+        	</fileset>
+        	<fileset dir="${web.lib}">
+        		<include name="utils-1.0.jar"/>
+        		<include name="commons-logging-1.0.4.jar"/>
+        		<include name="commons-beanutils-1.7.0.jar"/>
+        	</fileset>
+        	<fileset dir="${etc.home}">
+        		<include name="monitor.sh"/>
+        	</fileset>
+        </copy>
+		<jar destfile="${build.monitor}/broker.jar" basedir="${build.classes}"
+		       excludes="com/espmail/broker/actions/**/*,com/espmail/broker/forms/**/*">
+			<manifest>
+				<attribute name="Main-Class" value="com.espmail.broker.generacion.Monitor"/>
+				<attribute name="Class-Path" value="classes12.jar commons-dbcp-1.2.2.jar commons-io-1.1.jar commons-pool-1.3.jar jmxri.jar jmxtools.jar mail.jar utils-1.0.jar commons-logging-1.0.4.jar commons-beanutils-1.7.0.jar xercesImpl.jar xml-apis.jar activation.jar"/>
+			</manifest>
+		</jar>
+	</target>
+
+
+    <!--
+     Lanzamiento jar
+    -->
+
+    <path id="base.path">
+        <fileset dir="${lib.home}">
+            <include name="*.jar" />
+            <include name="*.zip" />
+        </fileset>
+    </path>
+    <target name="init_launch">
+        <delete dir="${build.classes}" />
+        <delete dir="${build.home}" />
+        <mkdir dir="${build.classes}" />
+        <mkdir dir="${build.home}" />
+    </target>
+    <target name="compile_launch" depends="init_launch">
+        <delete file="${build.home}/lanzamiento.jar" />
+        <javac destdir="${build.classes}" srcdir="${src.java}" debug="true"
+               source="1.4" target="1.4">
+            <classpath refid="base.path" />
+        </javac>
+        <copy todir="./" file="${etc.home}/configuration.xml" />
+        <!--<copy todir="${build.dir}/" file="${src.dir}/log4j.properties" />-->
+        <jar file="${build.home}/lanzamiento.jar" basedir="${build.classes}"
+             compress="true">
+            <manifest>
+                <attribute name="Main-Class" value="com.espmail.lanzador.Lanzador" />
+                <attribute name="Class-Path"
+                           value="broker.jar xercesImpl.jar xml-apis.jar mailapi.jar classes12.jar activation.jar commons-collections.jar commons-dbcp-1.2.2.jar commons-logging-1.0.4.jar
+            mail.jar imap.jar mailapi.jar pop3.jar utils-1.0.jar commons-beanutils-1.7.0.jar commons-pool-1.3.jar smtp.jar jmxtools.jar jmxri.jar" />
+            </manifest>
+        </jar>
+    </target>
+</project>

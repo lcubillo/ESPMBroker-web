@@ -1,0 +1,70 @@
+<dao>
+	<metodo nombre="findAll" params="idCliente">
+		select id_lista, id_cliente, nombre_lista, num_registros, estado,
+			   etiqueta_t1, etiqueta_t2, etiqueta_t3,
+			   to_char(fecha_creacion, 'dd/MM/yyyy hh24:mi:ss'),
+			   to_char(fecha_baja, 'dd/MM/yyyy hh24:mi:ss')
+			from listas
+		   where id_cliente = #idCliente#
+		     and fecha_baja is null
+	</metodo>
+	<metodo nombre="findById" params="idCliente, idLista">
+		select id_lista, id_cliente, nombre_lista, num_registros, estado,
+			   etiqueta_t1, etiqueta_t2, etiqueta_t3,
+			   to_char(fecha_creacion, 'dd/MM/yyyy hh24:mi:ss'),
+			   to_char(fecha_baja, 'dd/MM/yyyy hh24:mi:ss')
+		  from listas
+		 where id_lista = #idLista#
+		   and id_cliente = #idCliente#
+		   and fecha_baja is null
+	</metodo>
+	<metodo nombre="findByEnvio" params="idCliente, idEnvio">
+		select listas.id_lista, listas.id_cliente, listas.nombre_lista,
+			   listas.num_registros, listas.estado, listas.etiqueta_t1,
+			   listas.etiqueta_t2, listas.etiqueta_t3,
+			   to_char(listas.fecha_creacion,'dd/MM/yyyy hh24:mi:ss'),
+			   to_char(listas.fecha_baja, 'dd/MM/yyyy hh24:mi:ss')
+		  from listas, envios_listas
+		 where listas.id_lista = envios_listas.id_Lista
+		   and id_envio = #idEnvio#
+		   and id_cliente = #idCliente#
+	</metodo>
+	<metodo nombre="insert" params="lista">
+		insert into listas (id_lista, id_cliente, nombre_lista, num_registros,
+			estado, etiqueta_t1, etiqueta_t2, etiqueta_t3, fecha_creacion, fecha_baja)
+		values (#lista.idLista#, #lista.idCliente#, #lista.nombre#, 0,
+			#lista.estado#, #lista.etiqueta1#,
+			#lista.etiqueta2#, #lista.etiqueta3#, #lista.creacion#,
+			#lista.baja#)
+	</metodo>
+    <metodo nombre="getId">
+		select sq_lista.nextval from dual
+	</metodo>
+	<metodo nombre="update" params="lista">
+		UPDATE LISTAS
+		   SET NOMBRE_LISTA = #lista.nombre#,
+			   ESTADO = #lista.estado#,
+			   FECHA_BAJA = #lista.baja#,
+			   ETIQUETA_T1 = #lista.etiqueta1#,
+			   ETIQUETA_T2 = #lista.etiqueta2#,
+			   ETIQUETA_T3 = #lista.etiqueta3#
+		 WHERE ID_LISTA = #lista.idLista#
+		   AND ID_CLIENTE = #lista.idCliente#
+	</metodo>
+    <metodo nombre="eliminar" params="idCliente, idLista">    
+    {call borrar_lista(#idLista#,#idCliente#)}    	
+    </metodo>
+    <metodo nombre="actualizaRegistros" params="idCliente, idLista, num">
+		update listas set num_registros = num_registros + #num#
+		 where id_lista=#idLista#
+           and id_cliente=#idCliente#
+	</metodo>
+    <metodo nombre="existeNombre" params="idCliente, idLista, nombre">
+		select decode(count(*), 0, 'false', 'true')
+		  from listas
+		 where id_lista != #idLista#
+           and id_cliente = #idCliente#
+		   and nombre_lista = #nombre#
+		   and FECHA_BAJA is null
+	</metodo>
+</dao>

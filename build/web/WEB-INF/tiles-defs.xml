@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN"
+       "http://jakarta.apache.org/struts/dtds/tiles-config_1_1.dtd">
+
+<tiles-definitions>
+	<definition name="base" page="/WEB-INF/plantilla/plantilla.jsp">
+    </definition>
+	<definition name="page.login" page="/WEB-INF/plantilla/plantillaLogin.jsp">
+		<put name="cuerpo" value="/WEB-INF/jsp/login.jsp"/>
+    </definition>
+	<definition name="page.error" extends="base">
+		<put name="pagina" value="error"/>
+		<put name="cuerpo" value="/WEB-INF/jsp/error.jsp"/>
+    </definition>
+	<definition name="page.exito" extends="base">
+		<put name="pagina" value="exito"/>
+		<put name="cuerpo" value="/WEB-INF/jsp/exito.jsp"/>
+    </definition>
+
+    <definition name="page.personal.cambiopassword" extends="base">
+    	<put name="cuerpo" value="/WEB-INF/jsp/personal/cambiopassword.jsp"/>
+    </definition>
+    
+	<definition name="page.envios.inicio" extends="base">
+		<put name="cuerpo" value="/WEB-INF/jsp/envios/inicio.jsp"/>
+    </definition>
+    <definition name="page.envios.tabs" extends="base">
+		<put name="cuerpo" value="/WEB-INF/plantilla/tabsEnvio.jsp"/>
+    </definition>
+    <definition name="page.envios.datos" extends="page.envios.tabs">
+		<put name="contenidoTab" value="/WEB-INF/jsp/envios/datos.jsp"/>
+    </definition>
+    <definition name="page.envios.preview" extends="page.envios.tabs">
+		<put name="contenidoTab" value="/WEB-INF/jsp/envios/preview.jsp"/>
+    </definition>
+    <definition name="page.envios.asociarListas" extends="page.envios.tabs">
+		<put name="contenidoTab" value="/WEB-INF/jsp/envios/asociarListas.jsp"/>
+    </definition>
+    <definition name="page.envios.test" extends="page.envios.tabs">
+		<put name="contenidoTab" value="/WEB-INF/jsp/envios/test.jsp"/>
+    </definition>
+    <definition name="page.envios.lanzar" extends="page.envios.tabs">
+		<put name="contenidoTab" value="/WEB-INF/jsp/envios/lanzar.jsp"/>
+    </definition>
+    <definition name="page.envios.exito" extends="page.envios.tabs">
+		<put name="pagina" value="exito"/>
+		<put name="contenidoTab" value="/WEB-INF/jsp/exito.jsp"/>
+    </definition>
+    <definition name="page.envios.listado" extends="base">
+		<put name="cuerpo" value="/WEB-INF/jsp/envios/listado.jsp"/>
+    </definition>
+    <definition name="page.envios.nuevo" extends="base">
+		<put name="pagina" value="nuevo"/>
+		<put name="cuerpo" value="/WEB-INF/jsp/envios/datos.jsp"/>
+    </definition>
+    <definition name="page.envios.resumen" extends="base">
+		<put name="pagina" value="resumen"/>
+		<put name="cuerpo" value="/WEB-INF/jsp/envios/resumen.jsp"/>
+    </definition>
+    
+    
+	<definition name="page.listas.datos" extends="base">
+   		<put name="pagina" value="datos"/>
+		<put name="cuerpo" value="/WEB-INF/jsp/listas/datos.jsp"/>
+    </definition>
+   	<definition name="page.listas.listado" extends="base">
+		<put name="cuerpo" value="/WEB-INF/jsp/listas/listado.jsp"/>
+    </definition>
+   	<definition name="page.listas.mapeo" extends="base">
+		<put name="cuerpo" value="/WEB-INF/jsp/listas/mapeo.jsp"/>
+    </definition>
+    <definition name="page.listas.busqueda" extends="base">
+		<put name="cuerpo" value="/WEB-INF/jsp/listas/busquedaEmail.jsp"/>
+    </definition>
+
+
+    <definition name="page.estadisticas.dia" extends="base">
+    	<put name="cuerpo" value="/WEB-INF/jsp/estadisticas/dia.jsp"/>
+    </definition>
+    <definition name="page.estadisticas.clicks" extends="base">
+    	<put name="cuerpo" value="/WEB-INF/jsp/estadisticas/clicks.jsp"/>
+    </definition>
+</tiles-definitions>

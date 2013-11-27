@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project default="compilar" basedir="." name="Lanzamiento">
+   <property file="build.properties"/>
+	<path id="base.path">
+		<fileset dir="${lib.home}">
+			<include name="*.jar" />
+			<include name="*.zip" />
+		</fileset>
+	</path>
+	<target name="init">        
+         <delete dir="${build.classes}" />
+         <delete dir="${build.home}" />
+         <mkdir dir="${build.classes}" />
+         <mkdir dir="${build.home}" />
+	</target>
+	<target name="compilar" depends="init">
+		<delete file="${build.home}/lanzamiento.jar" />
+		<javac destdir="${build.classes}" srcdir="${src.java}" debug="true"
+			source="1.4" target="1.4">
+			<classpath refid="base.path" />
+		</javac>
+		<copy todir="./" file="${etc.home}/configuration.xml" />
+		<!--<copy todir="${build.dir}/" file="${src.dir}/log4j.properties" />-->
+		<jar file="${build.home}/lanzamiento.jar" basedir="${build.classes}"
+			compress="true">
+			<manifest>
+				<attribute name="Main-Class" value="com.espmail.lanzador.Lanzador" />
+				<attribute name="Class-Path"
+					value="broker.jar xercesImpl.jar xml-apis.jar mailapi.jar classes12.jar activation.jar commons-collections.jar commons-dbcp-1.2.2.jar commons-logging-1.0.4.jar
+            mail.jar imap.jar mailapi.jar pop3.jar utils-1.0.jar commons-beanutils-1.7.0.jar commons-pool-1.3.jar smtp.jar jmxtools.jar jmxri.jar" />
+			</manifest>
+		</jar>
+	</target>
+</project>

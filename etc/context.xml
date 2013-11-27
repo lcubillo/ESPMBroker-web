@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Hay que parametrizar este fichero para terminar de generarlo con ant
+Los parametros a sobreescribir son
+driverClassName, driverName, url connectionURL
+-->
+<Context crossContext="true" reloadable="true" docBase="../build/web">
+        <Parameter name="mail.server" value="127.0.0.1" override="false"/>
+        <Parameter name="mail.debug" value="true" override="false"/>
+
+        <Resource name="jdbc/pool"
+                  auth="Container"
+                  type="javax.sql.DataSource"
+                  maxActive="100"
+                  maxIdle="30"
+                  maxWait="10000"
+                  username="espmailbroker"
+                  password="3spM41lBr0k3r"
+                  driverClassName="com.mysql.jdbc.Driver"
+                  url="jdbc:mysql://localhost:3306/espmailbroker?profileSQL=true" />
+
+        <Realm className="org.apache.catalina.realm.JDBCRealm" debug="99"
+              driverName="oracle.jdbc.driver.OracleDriver"
+           connectionURL="jdbc:mysql://localhost:3306/espmailbroker?profileSQL=true"
+          connectionName="espmaiespmailbroker"
+          connectionPassword="3spM41lBr0k3r"
+               userTable="clientes" userNameCol="id_cliente" userCredCol="password"
+           userRoleTable="clientes" roleNameCol="'cliente'"/>
+   
+<!-- 
+    <Realm className="org.apache.catalina.realm.DataSourceRealm"
+           debug="99"
+           dataSourceName="jdbc/pool"
+           userTable="login_asociados"
+           userNameCol="cod"
+           userCredCol="crypto.descifrar(password)"
+           userRoleTable="login_asociados"
+           roleNameCol="rol"/> -->
+</Context>
+  
+  
+  

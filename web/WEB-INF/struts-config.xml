@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+
+<struts-config>
+	<form-beans>
+      <form-bean name="ConsoleForm" type="com.espmail.broker.actions.console.ConsoleForm"/>
+		<form-bean name="envios_datosForm"
+				type="com.espmail.broker.forms.envios.DatosForm" />
+		<form-bean name="envios_asociarListasForm"  
+				type="com.espmail.broker.forms.envios.AsociarListasForm" />
+		<form-bean name="envios_testForm" 
+				type="com.espmail.broker.forms.envios.TestForm" />
+		<form-bean name="envios_lanzarForm" 
+				type="com.espmail.broker.forms.envios.LanzarForm" />
+        <form-bean name="envios_listadoForm" 
+				type="com.espmail.broker.forms.envios.ListadoForm" />
+        <form-bean name="listas_datosForm"
+        		type="com.espmail.broker.forms.listas.DatosForm" />
+        <form-bean name="busquedaEmailForm"
+        		type="com.espmail.broker.forms.listas.BusquedaEmailForm" />
+        <form-bean name="cambioPasswordForm"
+        		type="com.espmail.broker.forms.personal.CambioPasswordForm" />
+        <form-bean name="monografiasForm"
+        		type="com.espmail.broker.forms.altas.MonografiasForm"/>
+	</form-beans>
+
+    <global-exceptions>
+	</global-exceptions>
+
+	<global-forwards>
+		<forward name="exito" path="page.exito"/>
+	</global-forwards>
+
+	<action-mappings>
+		<action path="/login" forward="page.login" />
+		<action path="/error" forward="page.error" />
+
+		<action path="/t" type="com.espmail.broker.actions.TrackingAction"/>
+		<action path="/g" type="com.espmail.broker.actions.MemCampAction"/>
+
+		<action path="/app/logout" type="com.espmail.broker.actions.LogoutAction"/>
+
+		<action path="/app/envios/inicio" 
+				type="com.espmail.broker.actions.envios.InicioAction"
+				input="page.envios.inicio"/>
+		<action path="/app/envios/nuevo"
+				type="com.espmail.broker.actions.envios.DatosAction"
+				input="page.envios.nuevo"
+				name="envios_datosForm"
+				scope="request"
+				parameter="summit"/>
+		<action path="/app/envios/datos"
+				type="com.espmail.broker.actions.envios.DatosAction"
+				input="page.envios.datos"
+				name="envios_datosForm"
+				scope="request"
+				parameter="summit">
+			<forward name="resumen" path="page.envios.resumen"/>
+		</action>
+		<action path="/app/envios/asociarListas"
+				type="com.espmail.broker.actions.envios.AsociarListasAction"
+				input="page.envios.asociarListas"
+				name="envios_asociarListasForm"
+				scope="request"
+				parameter="summit"/>
+		<action path="/app/envios/test"
+				type="com.espmail.broker.actions.envios.TestAction"
+				input="page.envios.test"
+				name="envios_testForm"
+				scope="request"
+				parameter="summit">
+			<forward name="exito" path="page.envios.exito"/>
+		</action>
+		<action path="/app/envios/preview"
+				type="com.espmail.broker.actions.envios.PreviewAction"
+				input="page.envios.preview"/>
+		<action path="/app/envios/lanzar"
+				type="com.espmail.broker.actions.envios.LanzarAction"
+				input="page.envios.lanzar"
+				name="envios_lanzarForm"
+				scope="request"
+				parameter="summit"/>
+				
+		<action path="/app/envios/listado"
+				type="com.espmail.broker.actions.envios.ListadoAction"
+				input="page.envios.listado"
+				name="envios_listadoForm"
+				scope="request"
+				parameter="summit"/>
+
+		<action path="/app/listas/nueva"
+				type="com.espmail.broker.actions.listas.DatosAction"
+				input="page.listas.datos"
+				name="listas_datosForm"
+				scope="request"
+				parameter="summit">
+            <forward name="mapeo" path="page.listas.mapeo" />
+		</action>
+		<action path="/app/listas/datos"
+				type="com.espmail.broker.actions.listas.DatosAction"
+				input="page.listas.datos"
+				name="listas_datosForm"
+				scope="request"
+				parameter="summit">
+            <forward name="mapeo" path="page.listas.mapeo" />
+		</action>
+		<action path="/app/listas/mapeo"
+				type="com.espmail.broker.actions.listas.MapeoAction"
+				input="page.listas.mapeo"
+				name="listas_datosForm"
+				scope="request"/>
+		<action path="/app/listas/listado" 
+				type="com.espmail.broker.actions.listas.ListadoAction"
+				input="page.listas.listado"
+				parameter="summit"/>
+		<action path="/app/listas/busqueda"
+				type="com.espmail.broker.actions.listas.BusquedaEmailAction"
+				input="page.listas.busqueda"
+				name="busquedaEmailForm"
+				scope="request"
+				parameter="summit">
+		</action>
+         <action input="/" name="ConsoleForm" path="/console.do" scope="session" type="com.espmail.broker.actions.console.ConsoleAction"/>
+		<action path="/app/estadisticas/dia"
+				type="com.espmail.broker.actions.estadisticas.EstadisticaDiaAction"
+				input="page.estadisticas.dia"/>
+		<action path="/app/estadisticas/clicks" 
+				type="com.espmail.broker.actions.estadisticas.ClicksAction"
+				input="page.estadisticas.clicks"/>
+						
+		<action path="/app/personal/cambiopassword" 
+				type="com.espmail.broker.actions.personal.CambioPasswordAction"
+				input="page.personal.cambiopassword"
+				scope="request"				
+				name="cambioPasswordForm"/>		
+		<action path="/altas"
+				type="com.espmail.broker.actions.altas.MonografiasAction"
+				name="monografiasForm"	/>
+				
+	</action-mappings>
+
+
+
+	<controller >
+		<set-property property="locale" value="true" />
+        <set-property property="processorClass" value="org.apache.struts.tiles.TilesRequestProcessor" />
+	</controller>
+
+    <message-resources parameter="com.espmail.ApplicationResources" />
+
+
+    <plug-in className="org.apache.struts.tiles.TilesPlugin">
+        <set-property property="definitions-config"
+                      value="/WEB-INF/tiles-defs.xml" />
+        <set-property property="moduleAware" value="true" />
+    </plug-in>
+
+</struts-config>

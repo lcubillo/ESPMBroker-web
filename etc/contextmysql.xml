@@ -1,0 +1,36 @@
+<Context crossContext="true" reloadable="true" docBase="../build/web">
+        <Parameter name="mail.server" value="127.0.0.1" override="false"/>
+        <Parameter name="mail.debug" value="true" override="false"/>
+
+        <Resource name="jdbc/pool"
+                  auth="Container"
+                  type="javax.sql.DataSource"
+                  maxActive="100"
+                  maxIdle="30"
+                  maxWait="10000"
+                  username="asp"
+                  password="aspcorp"
+                  driverClassName="org.git.mm.mysql.Driver"
+                  url="jdbc:mysql://localhost:3306/confluence?useUnicode=true&amp;characterEncoding=utf8" />
+
+        <Realm className="org.apache.catalina.realm.JDBCRealm" debug="99"
+              driverName="org.git.mm.mysql.Driver"
+           connectionURL="jdbc:mysql://localhost/authority?user=dbuser&amp;password=dbpass"
+          connectionName="espmail"
+          connectionPassword="espmailbrokercorp"
+               userTable="clientes" userNameCol="id_cliente" userCredCol="password"
+           userRoleTable="clientes" roleNameCol="'cliente'"/>
+
+<!--
+    <Realm className="org.apache.catalina.realm.DataSourceRealm"
+           debug="99"
+           dataSourceName="jdbc/pool"
+           userTable="login_asociados"
+           userNameCol="cod"
+           userCredCol="crypto.descifrar(password)"
+           userRoleTable="login_asociados"
+           roleNameCol="rol"/> -->
+</Context>
+
+
+  

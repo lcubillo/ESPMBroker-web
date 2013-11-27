@@ -1,0 +1,86 @@
+<dao>
+	<metodo nombre="findAll" params="idCliente, idLista">
+		select id_email, u.id_lista, email, nombre, apellidos, tratamiento,
+			   to_char(fecha_creacion,'dd/MM/yyyy hh24:mi:ss'),
+			   to_char(fec_ult_actividad,'dd/MM/yyyy hh24:mi:ss'), t1, t2, t3
+		  from usuarios u, listas l
+		 where u.id_lista = l.id_lista
+		   and id_cliente = #idCliente#
+		   and u.id_lista = #idLista#
+	</metodo>
+	
+	<metodo nombre="find" params="idCliente, idLista, idMail">
+		select u.id_email, u.id_lista, u.email, u.nombre, u.apellidos, u.tratamiento,
+			   to_char(u.fecha_creacion,'dd/MM/yyyy hh24:mi:ss'),
+			   to_char(u.fec_ult_actividad,'dd/MM/yyyy hh24:mi:ss'), u.t1, u.t2, u.t3
+		  from usuarios u, listas l
+		 where u.id_lista = l.id_lista
+		   and id_cliente = #idCliente#
+		   and u.id_lista = #idLista#
+		   and u.id_email = #idMail#
+	</metodo>
+	
+	<metodo nombre="findByEmail" params="idCliente, email">
+		select nombre "nombre", apellidos "apellidos",
+			   email "email", to_char(u.fecha_creacion,'dd/MM/yyyy hh24:mi:ss') "fechaCreacion",
+			   nombre_lista "nombreLista", u.id_lista || '_' || id_email "id"
+		  from usuarios u, listas l
+		 where u.id_lista = l.id_lista
+		   and l.id_cliente = #idCliente#
+		   and u.email like '%' || #email# || '%'
+	</metodo>
+
+   <metodo nombre="findByIdEnvio" params="idEnvio, idLista, idEmail" >
+      select u.id_email, u.id_lista, u.email, u.nombre , u.apellidos ,u.tratamiento,
+         to_char(u.fecha_creacion,'dd/MM/yyyy hh24:mi:ss') , to_char(u.fec_ult_actividad,'dd/MM/yyyy hh24:mi:ss'), t1, t2, t3			   
+      from usuarios u, listas l, envios e, clientes c
+      where u.id_email = #idEmail#
+      and u.id_lista = #idLista#
+      and u.id_lista = l.id_lista
+      and e.id_envio=#idEnvio#
+      and e.id_cliente = c.id_cliente
+      and l.id_cliente = c.id_cliente
+   </metodo>
+
+   <metodo nombre="eliminar" params="idCliente, idLista, idEmail, ip">
+		{call borrar_usuario_listas(#idEmail#, #idLista#, 'W', #ip#, #idCliente#)}
+	</metodo>
+
+
+	<metodo nombre="insertar" params="idCliente, usuario">
+		insert into usuarios (id_email, id_lista, email, nombre, apellidos,
+			tratamiento, fecha_creacion, fec_ult_actividad, t1, t2, t3)
+		select #usuario.idEmail#,#usuario.idLista#,#usuario.email#, #usuario.nombre#,
+  			   #usuario.apellidos#, #usuario.tratamiento#, #usuario.creacion#, 
+  			   #usuario.ultimaActividad#,#usuario.valor1#, #usuario.valor2#, #usuario.valor3#
+  		  from listas
+  		 where id_cliente = #idCliente# 
+	</metodo>
+	<metodo nombre="altaUsuario" params="idEmail,idLista,email,nombre,apellidos,tratamiento,fechaAlta,fechaAcceso,t1,t2,t3">		
+		insert into usuarios (id_email, id_lista, email, nombre, apellidos,
+			tratamiento, fecha_creacion, fec_ult_actividad, t1, t2, t3)
+		values (#idEmail#,#idLista#,#email#, #nombre#,
+  			   #apellidos#, #tratamiento#, #fechaAlta#, 
+  			   #fechaAcceso#,#t1#, #t2#, #t3#)  		  
+	</metodo>
+		
+	<metodo nombre="cambiaEstadoEnviado" params="idEmail, idEnvio, estado">
+		update enviados
+		   set estado = #estado#,
+		   	   fec_envio = sysdate
+		 where id_email = #idEmail#
+		   and id_envio = #idEnvio#
+	</metodo>   
+   <metodo nombre="actualizaEnviados" params="idEmailInicio, idEmailFin, idEnvio, estado">
+      update enviados set estado=#estado#,
+         fec_envio=nvl(fec_envio,sysdate)
+      where id_email between  #idEmailInicio# and #idEmailFin#
+      and id_envio = #idEnvio#
+   </metodo>
+   <metodo nombre="existeUsuarioLista" params="idLista,email">
+		select count(*)
+		  from usuarios
+		 where id_lista = #idLista#
+		   and email = #email#
+	</metodo>
+</dao>

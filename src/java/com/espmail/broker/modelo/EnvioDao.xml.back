@@ -1,0 +1,106 @@
+<dao>
+	<metodo nombre="insert" params="envio">
+		INSERT INTO ENVIOS(ID_CLIENTE, ID_ENVIO, ETIQUETA, DESCRIPCION,
+			ESTADO, FECHA_ENVIO, HTML, TEXTO, REMITENTE, ASUNTO, REPLYTO)
+		VALUES(#envio.idCliente#, #envio.idEnvio#, #envio.etiqueta#,
+			#envio.descripcion#, #envio.estado#, #envio.fechaEnvio#,
+			#envio.html#, #envio.texto#, #envio.remitente#, #envio.asunto#,
+			#envio.replyTo#)
+	</metodo> 
+	<metodo nombre="find" params="idCliente">
+		SELECT ID_CLIENTE, ID_ENVIO, ETIQUETA, DESCRIPCION, ESTADO,
+			   to_char(FECHA_ENVIO,'dd/MM/yyyy hh24:mi:ss'),
+			   HTML, to_char(TEXTO), REMITENTE, ASUNTO, REPLYTO
+		  FROM ENVIOS
+		 WHERE ID_CLIENTE = #idCliente#
+	</metodo>
+	<metodo nombre="findById" params="idCliente, idEnvio">
+		SELECT ID_CLIENTE, ID_ENVIO, ETIQUETA, DESCRIPCION, ESTADO,
+			to_char(FECHA_ENVIO,'dd/MM/yyyy hh24:mi:ss'), HTML,
+			to_char(TEXTO), REMITENTE, ASUNTO, REPLYTO
+		 FROM ENVIOS
+		WHERE ID_ENVIO = #idEnvio#
+		  AND ID_CLIENTE = #idCliente#
+	</metodo>
+	<metodo nombre="findByIdPrivado" params="idEnvio">
+		SELECT ID_CLIENTE, ID_ENVIO, ETIQUETA, DESCRIPCION, ESTADO,
+			to_char(FECHA_ENVIO,'dd/MM/yyyy hh24:mi:ss'), HTML,
+			to_char(TEXTO), REMITENTE, ASUNTO, REPLYTO
+		 FROM ENVIOS
+		WHERE ID_ENVIO = #idEnvio#
+	</metodo>
+	<metodo nombre="existeEtiqueta" params="idCliente, idEnvio, etiqueta">
+		SELECT DECODE(COUNT(*),0,'false','true') FROM ENVIOS
+		 WHERE ID_CLIENTE = #idCliente#
+		   AND ID_ENVIO != #idEnvio#
+		   AND ETIQUETA = #etiqueta#
+	</metodo>
+	<metodo nombre="update" params="envio">
+		UPDATE ENVIOS
+		   SET ETIQUETA = #envio.etiqueta#,
+		       DESCRIPCION = #envio.descripcion#,
+			   FECHA_ENVIO = #envio.fechaEnvio#,
+			   HTML = #envio.html#,
+			   TEXTO = #envio.texto#,
+			   REMITENTE = #envio.remitente#,
+			   ASUNTO = #envio.asunto#,
+			   REPLYTO = #envio.replyTo#
+		 WHERE ID_CLIENTE = #envio.idCliente#
+		   AND ID_ENVIO = #envio.idEnvio#
+		   AND ESTADO = 'P'
+	</metodo>
+	<metodo nombre="findListos">
+		SELECT ID_ENVIO
+		  FROM ENVIOS
+		 WHERE ESTADO = 'L'
+		   AND FECHA_ENVIO &lt; SYSDATE
+	</metodo>
+	<metodo nombre="findByIdForUpdate" params="idEnvio">
+		SELECT ID_CLIENTE, ID_ENVIO, ETIQUETA, DESCRIPCION, ESTADO,
+			to_char(FECHA_ENVIO,'dd/MM/yyyy hh24:mi:ss'), HTML,
+			to_char(TEXTO), REMITENTE, ASUNTO, REPLYTO
+		 FROM ENVIOS
+		WHERE ID_ENVIO = #idEnvio#
+		  FOR UPDATE NOWAIT
+	</metodo>
+    <metodo nombre="getId">
+		select sq_envio.nextval from dual
+	</metodo>
+    <metodo nombre="deleteListas" params="idCliente, idEnvio">
+		delete from envios_listas
+		 where id_envio = (select id_envio
+		 					 from envios
+		 					where id_envio = #idEnvio#
+		 					  and id_cliente = #idCliente#
+		 					  and estado = 'P')  
+	</metodo>
+	<metodo nombre="insertLista" params="idCliente, idEnvio, idLista">
+		insert into envios_listas (id_envio, id_lista)
+		select id_envio, #idLista#
+		  from envios
+		 where id_envio = #idEnvio#
+		   and id_cliente = #idCliente#
+		   and estado = 'P'
+	</metodo>
+	<metodo nombre="findListas" params="idCliente, idEnvio">
+		select id_lista
+		  from envios_listas el, envios e
+		 where el.id_envio = e.id_envio
+		   and e.id_envio = #idEnvio#
+		   and id_cliente = #idCliente#
+	</metodo>
+	<metodo nombre="cambiaEstado" params="idEnvio, estado">
+		update envios set estado = #estado#, 
+			   inicio_envio = decode(#estado#, 'N', SYSDATE, inicio_envio)
+		 where id_envio = #idEnvio#
+	</metodo>
+	<metodo nombre="prepararEnvio" params="idCliente, idEnvio">
+		{call preparar_envio(#idCliente#, #idEnvio#)}
+	</metodo>
+	<metodo nombre="findEnviosParados">
+		select id_envio
+		  from envios
+		 where estado = 'N'
+		   and inicio_envio > sysdate + 1
+	</metodo>
+</dao>

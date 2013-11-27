@@ -1,0 +1,277 @@
+* {
+	-moz-box-sizing : border-box;
+	box-sizing : border-box;
+}
+
+body {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 10pt;
+	margin : 0;
+	padding : 0;
+	text-align : center;
+}
+
+a {
+	color : blue;
+}
+
+div#pagina {
+	border : 1px solid #bbb;
+	margin : auto;
+	padding : 0;
+	text-align: left;
+	width : 996px;
+	position : relative;
+}
+
+div#cabecera {
+	background : transparent url(logo.gif) no-repeat center left;
+	height : 60px;
+}
+
+div#cabecera h1 {
+	display : none;
+}
+
+div#cabecera h2 {
+	padding-top : 15px;
+	margin-top : 0px;
+	margin-left : 180px;
+}
+
+div#menu {
+	float : left;
+	width : 180px;
+	padding-left : 5px;
+	margin-bottom : 10px;
+}
+
+	div#menu ul {
+		margin : 0;
+		padding : 0;
+	}
+	
+		div#menu ul li {
+			list-style-type : none;
+			margin : 0;
+			padding : 0;
+		}
+	
+			div#menu ul li a {
+				border : 1px solid black;
+				display : block;
+				background-color : #5aacff;
+				color : white;
+				padding : 3px;
+				text-decoration : none;
+				width : 100%;
+			}
+			
+			div#menu ul li a.selected {
+				color : black;
+				background-color : white;
+			}
+
+			div#menu ul li a:hover {
+				text-decoration : underline;
+			}
+
+				div#menu ul li ul a {
+					background-color : #dcedff;
+					color : black;
+					padding-left : 10px;
+				}
+
+div#cuerpo {
+	float : left;
+	width : 766px;
+	margin : 0px 20px 10px 20px;
+}
+
+div#pie {
+	clear : both;
+	text-align: center;
+	border-top : 1px solid #888;
+	margin : 20px;
+	padding : 15px;
+	color : #888;
+	font-size : 7pt;
+}
+
+div.message {
+	padding : 10px;
+	margin : 10px;
+	border : 1px dotted #777;
+	background-color : #fffcc6;
+}
+
+ul.errors {
+	color : red;
+	font-weight: bold;
+}
+
+div.Bloque {
+	padding : 5px 0px 5px 0px;
+}
+
+div.Bloque:after {
+    content: "."; 
+    display: block; 
+    height: 0; 
+    clear: both; 
+    visibility: hidden;
+}
+
+/* Hides from IE-mac \*/
+* html div.Bloque {height: 1%;}
+/* End hide from IE-mac */
+
+div.Bloque div.Titulo {
+	color: #333;
+	font-size: 13pt;
+	font-weight: bold;
+	font-family:Arial, Helvetica, sans-serif;
+	padding-bottom : 2px;
+	border-bottom : 1px solid black;
+	margin-bottom : 8px;
+}
+
+div.Bloque div.SubBloque {
+	float : left;
+	width : 380px;
+}
+	
+.field {
+	font-size: 8pt;
+	font-family:Arial, Helvetica, sans-serif;
+	margin : 0px 0px 4px 0px;
+}
+
+.field label {
+	display : block;
+	width : 135px;
+	float : left;
+	font-weight: bold;
+}
+
+.field.required label {
+    font-weight: expression((this.firstChild == this.lastChild? (this.innerHTML += '<span class="requiredIcon">*</span>') : null)? 'bold' : 'bold'); 
+}
+
+.field.required label:after, .field.required label .requiredIcon {
+    content: " *";
+    color : red;
+    font-size: 10pt;
+}
+
+.field input, .field textarea, .field select, .field ul, .field span {
+	font-size: 8pt;
+	font-family:Arial, Helvetica, sans-serif;
+	padding : 0;
+	color : black;
+}
+
+.field ul {
+	width : 200px;
+	margin-left : 140px;
+}
+
+.field ul li {
+	padding : 0;
+	margin : 0;
+	display : block;
+	float : left;
+	width : 95px;
+}
+
+.number {
+	text-align : right;
+}
+
+.listControles span {
+	padding : 2px 10px;
+	border : 1px dotted #777;
+}
+
+.listControles span.registros {
+	background-color : #fffcc6;
+	margin-right : 20px;
+}
+
+div.tabPanel {
+	padding : 0px;
+	margin : 10px 0 10px 0;
+}
+
+	div.tabPanel div.tabPanelContent {
+		border : 1px solid black; 
+		margin-top : 0px;
+		padding : 10px;
+	}
+
+	div.tabPanel ul.tabs {
+		margin : 0;
+		padding : 4px 4px 3px 4px;
+	}
+	
+	div.tabPanel ul.tabs li {
+		display : inline;
+		list-style-type : none;
+		padding : 5px;
+	}
+
+		div.tabPanel ul.tabs li a {
+			background-color : #eee;
+			border : 1px solid black;
+			color  : #777;
+			margin : 2px 2px 0 2px;
+			padding : 3px 10px;
+			text-decoration : none;
+		}
+		
+		div.tabPanel ul.tabs li a:hover {
+			background-color : black;
+			color : white;
+		}
+		
+		div.tabPanel ul.tabs li a.selected {
+			background-color : white;
+			border-bottom : 1px solid white;
+			color : black;		
+		}
+
+table.listado {
+	width : 740px;
+	font-size: 8pt;
+	color: #000;
+	border : 1px solid black;
+	margin-top : 20px;
+}
+
+	table.listado td {
+		padding-left : 3px;
+		padding-right : 3px;
+		font-size: 8pt;
+		vertical-align : top;
+	}
+
+.scrollable {
+	overflow : auto;
+	padding : 5px;
+	margin-bottom : 10px;
+}
+
+#reloj {
+	background : white url(reloj_espera_anima.gif) no-repeat center center;
+	height : 300px;
+	width : 300px;
+	border : 1px solid black;
+	font-size : 25pt;
+	text-align : center;
+	position : absolute;
+	top : 200px; 
+	left : 400px;
+	z-index: 39;
+	vertical-align : middle;
+	padding-top : 10px;
+}

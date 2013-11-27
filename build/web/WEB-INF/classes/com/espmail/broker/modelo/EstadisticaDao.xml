@@ -1,0 +1,169 @@
+<dao>
+	<metodo nombre="dameResumen" params="idCliente">
+		select
+		  	e.id_envio "idEnvio",
+			e.etiqueta "etiqueta",
+			env.enviados "emailsEnviados",
+			to_char(e.fecha_envio,'DD/MM/YYYY') "fechaEnvio",
+			nvl((sum(decode(tipo,'L',1))*100/env.enviados),0) "lecturas",
+			nvl((sum(decode(tipo,'C',1))*100/(sum(decode(tipo,'L',1)))),0) "clicks",
+			nvl((sum(decode(tipo,'B',1))*100/env.enviados),0) "bajas",
+			nvl((num_rebotes.numero*100/env.enviados),0) "rebotes"
+		  from
+			tracking t,
+			(select count(*) numero,id_envio from rebotes group by id_envio) num_rebotes,
+			(select id_envio,count(*) enviados from enviados e group by id_envio) env,
+			envios e
+		  where
+		  	e.id_envio = env.id_envio
+			and t.id_envio(+)= e.id_envio
+			and e.id_envio = num_rebotes.id_envio(+)
+			and e.estado = 'E'
+			and e.id_cliente = #idCliente#
+		  group by e.etiqueta, num_rebotes.numero,id_cliente,env.enviados,e.fecha_envio,e.id_envio
+	</metodo>
+	<metodo nombre="dameResumenEnvio" params="idCliente,idEnvio">
+		select
+			  	e.id_envio "idEnvio",
+				e.etiqueta "etiqueta",
+				env.enviados "emailsEnviados",
+				to_char(e.fecha_envio,'DD/MM/YYYY HH:MM:SS') "fechaEnvio",
+				nvl((sum(decode(tipo,'L',1))*100/env.enviados),0) "lecturas",
+				nvl((sum(decode(tipo,'C',1))*100/(sum(decode(tipo,'L',1)))),0) "clicks",
+				nvl((sum(decode(tipo,'B',1))*100/env.enviados),0) "bajas"				
+			  from
+				tracking t,
+				(select count(*) numero,id_envio from rebotes group by id_envio) num_rebotes,
+				(select id_envio,count(*) enviados from enviados e group by id_envio) env,
+				envios e
+			  where
+			  	e.id_envio = env.id_envio
+				and t.id_envio = e.id_envio
+				and e.id_envio = #idEnvio#
+				and e.id_envio = num_rebotes.id_envio(+)
+				and e.estado = 'E'
+				and e.id_cliente = #idCliente#
+      	   and e.fecha_envio between  e.fecha_envio and add_months(e.fecha_envio,2)
+           group by e.etiqueta, num_rebotes.numero,id_cliente,env.enviados,e.fecha_envio,e.id_envio
+	</metodo>
+	<metodo nombre="dameClicks" params="idCliente,idEnvio">
+		select (sum(decode(tipo,'C',1))) "clicks",
+			t.url "url"
+		from  tracking t,
+			envios e
+		where t.id_envio(+)=e.id_envio
+			and e.id_cliente = #idCliente#
+			and e.id_envio = #idEnvio#
+			and tipo = 'C'
+		group by t.url,t.num order by 1 desc
+	</metodo>
+	<metodo nombre="dameTotalesResumenDia" params="idCliente,idEnvio">
+	 select sum("lecturas") "lecturas",sum("clicks") "Clicks",sum("bajas") "Bajas" from(
+	select to_char(trunc(t.fecha),'DD/MM/YYYY') "fecha",
+			   sum(decode(t.tipo,'L',1,0)) "lecturas",
+			   sum(decode(t.tipo,'C',1,0)) "clicks",
+			   sum(decode(t.tipo,'B',1,0)) + nvl(bajas_fbl.bajas,0)  "bajas",
+			   nvl(num_rebotes.numero,0)"rebotes"
+		from tracking t,
+			 envios e,
+			 (select count(*) numero,trunc(fecha) fecha
+			  from rebotes
+			  where id_envio = #idEnvio#
+			  group by TRUNC(fecha)) num_rebotes,
+			 (select trunc(fecha) fecha,
+			 	count(*) bajas
+				from fbl
+			  where id_envio = #idEnvio#
+			  group by trunc(fecha)
+			  ) bajas_fbl
+		where t.ID_ENVIO(+)=e.id_envio
+				and t.id_envio = #idEnvio#
+				and TRUNC(t.fecha) = num_rebotes.fecha(+)
+				and e.id_cliente = #idCliente#
+				and bajas_fbl.fecha (+) = trunc(t.fecha)
+		group by trunc(t.fecha),num_rebotes.numero,bajas_fbl.bajas)
+	</metodo>
+	<metodo nombre="dameResumenDia" params="idCliente,idEnvio">
+		select to_char(trunc(t.fecha),'DD/MM/YYYY') "fecha",
+			   sum(decode(t.tipo,'L',1,0)) "lecturas",
+			   sum(decode(t.tipo,'C',1,0)) "clicks",
+			   sum(decode(t.tipo,'B',1,0)) + nvl(bajas_fbl.bajas,0)  "bajas",
+			   nvl(num_rebotes.numero,0)"rebotes"
+		from tracking t,
+			 envios e,
+			 (select count(*) numero,trunc(fecha) fecha
+			  from rebotes
+			  where id_envio = #idEnvio#
+			  group by TRUNC(fecha)) num_rebotes,
+			 (select trunc(fecha) fecha,
+			 	count(*) bajas
+				from fbl
+			  where id_envio = #idEnvio#
+			  group by trunc(fecha)
+			  ) bajas_fbl
+		where t.ID_ENVIO(+)=e.id_envio
+				and t.id_envio = #idEnvio#
+				and TRUNC(t.fecha) = num_rebotes.fecha(+)
+				and e.id_cliente = #idCliente#
+				and bajas_fbl.fecha (+) = trunc(t.fecha)
+		group by trunc(t.fecha),num_rebotes.numero,bajas_fbl.bajas
+	</metodo>
+	<metodo nombre="dameEnviosEnviados" params="idCliente">
+		select
+		  	e.id_envio "idEnvio",
+         e.etiqueta||'('||e.fecha_envio||')' "etiqueta"
+		from
+			envios e
+      where
+		  	e.estado = 'E'
+			and e.id_cliente = #idCliente#
+      order by e.fecha_envio desc
+   </metodo>
+	<metodo nombre="dameBajasEnvio" params="idEnvio">
+		select
+			u.ID_EMAIL "id_Email",u.ID_LISTA "id_lista",u.EMAIL "Email",u.NOMBRE "nombre",
+		u.APELLIDOS "Apellidos",u.TRATAMIENTO "tratamiento",u.FECHA_CREACION "fecha_creacion",
+		u.FEC_ULT_ACTIVIDAD "fec_ult_actividad",u.T1 "t1",u.T2 "T2",u.T3 "t3",u.FECHA_BAJA "Fecha_baja",
+		u.MOTIVO_BAJA "motivo_baja",u.IP_BAJA "ip_baja"
+		from usuarios_borrados u,fbl f
+		where u.ID_EMAIL=f.ID_EMAIL
+			  and u.ID_LISTA=f.ID_LISTA
+			  and f.id_envio=#idEnvio#
+		union all
+		select
+			u.ID_EMAIL "id_Email",u.ID_LISTA "id_lista",u.EMAIL "Email",u.NOMBRE "nombre",
+		u.APELLIDOS "Apellidos",u.TRATAMIENTO "tratamiento",u.FECHA_CREACION "fecha_creacion",
+		u.FEC_ULT_ACTIVIDAD "fec_ult_actividad",u.T1 "t1",u.T2 "T2",u.T3 "t3",u.FECHA_BAJA "Fecha_baja",
+		u.MOTIVO_BAJA "motivo_baja",u.IP_BAJA "ip_baja"
+		from usuarios_borrados u,tracking t
+		where u.id_email=t.id_email
+			  and u.id_lista=t.id_lista
+			  and t.id_envio=#idEnvio#
+	</metodo>
+	<metodo nombre="dameBajasListas" params="idLista">
+		select
+			u.ID_EMAIL,u.ID_LISTA,u.EMAIL,u.NOMBRE,
+			u.APELLIDOS,u.TRATAMIENTO,u.FECHA_CREACION,
+			u.FEC_ULT_ACTIVIDAD,u.T1,u.T2,u.T3,u.FECHA_BAJA,
+			u.MOTIVO_BAJA,u.IP_BAJA
+		from usuarios_borrados u
+		where u.id_lista=#idLista#
+	</metodo>
+	<metodo nombre="dameEnvioEmailsFallidos" params="idCliente,idEnvio">
+		select e2.id_envio,
+			   e2.id_lista,
+			   e2.id_email,
+			   e2.fec_envio,
+			   e2.lecturas,
+			   e2.clicks,
+			   e2.estado
+			   from envios e, enviados e2
+			   where e2.estado = 'F'
+			   and e2.id_envio = #idEnvio#
+			   and e2.id_envio = e.id_envio
+			   and e.id_cliente = #idCliente#
+	</metodo>
+	<metodo nombre="dameEmailsLista" params="idLista">
+			select * from miembros where listas like '%,#idLista#,%'
+	</metodo>
+</dao>

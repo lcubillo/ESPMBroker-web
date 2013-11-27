@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Context crossContext="true" reloadable="true" docBase="ROOT.war" path="" > 
+        <Parameter name="mail.server" value="127.0.0.1" override="false"/>
+        <Parameter name="mail.debug" value="true" override="false"/>
+
+    <Resource name="jdbc/pool"
+              auth="Container"
+              type="javax.sql.DataSource"
+              maxActive="100"
+              maxIdle="30"
+              maxWait="10000"
+              username="espmailbrokerweb"
+              password="3spM41lBr0k3r"
+              driverClassName="com.mysql.jdbc.Driver"
+              url="jdbc:mysql://localhost:3306/espmailbroker?profileSQL=true" />
+
+        <Realm className="org.apache.catalina.realm.JDBCRealm"
+              driverName="com.mysql.jdbc.Driver"
+           connectionURL="jdbc:mysql://localhost:3306/espmailbroker?profileSQL=true"
+          connectionName="espmailbrokerweb"
+          connectionPassword="3spM41lBr0k3r"
+               userTable="clientes" userNameCol="username" userCredCol="password"
+           userRoleTable="clientes" roleNameCol="'cliente'"/>
+   
+</Context>

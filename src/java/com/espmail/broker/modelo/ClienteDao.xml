@@ -1,0 +1,19 @@
+<dao>
+	<metodo nombre="findById" params="id">
+		select id_cliente, nombre, password,
+			to_char(fecha_creacion,'dd/MM/yyyy hh24:mi:ss'), 
+			to_char(pie_html), to_char(pie_texto), url_baja, remitente
+		  from clientes
+		 where id_cliente = #id#
+	</metodo> 
+	<metodo nombre="cambiarPassword" params="idCliente,oldPassword,newPassword">
+		update clientes
+	   		set password = #newPassword#
+		where id_cliente = #idCliente# and password = #oldPassword#
+	</metodo>
+	<metodo nombre="getPassword" params="idCliente">
+		select password "password"
+		from clientes 
+		where id_cliente = #idCliente#
+	</metodo>
+</dao>
